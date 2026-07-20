@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#5EAEE0">
+<title>유정이 여름방학 시간표</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☀️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F2F8FC; --card:#FFFFFF; --ink:#274257; --sub:#7A8CA0;
+  --sky1:#6FBBE8; --sky2:#4E9BD8; --sun:#FFD66B; --line:#E3EDF5;
+  --now:#FF6B57;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:'Noto Sans KR',sans-serif; background:var(--bg); color:var(--ink);
+  min-height:100vh; padding-bottom:32px;
+}
+.jua{font-family:'Jua',sans-serif}
+
+/* ---------- header ---------- */
+header{
+  background:linear-gradient(150deg,var(--sky1),var(--sky2));
+  color:#fff; padding:18px 18px 54px; border-radius:0 0 26px 26px;
+  position:relative; overflow:hidden;
+}
+header .sun{
+  position:absolute; right:-22px; top:-22px; width:110px; height:110px; border-radius:50%;
+  background:radial-gradient(circle at 40% 40%, #FFE49A, var(--sun) 60%, rgba(255,214,107,.0) 72%);
+  opacity:.9;
+}
+header h1{font-family:'Jua'; font-size:24px; font-weight:400; letter-spacing:.5px}
+header .range{font-size:12.5px; opacity:.92; margin-top:4px}
+header .todaypill{
+  display:inline-block; margin-top:10px; background:rgba(255,255,255,.22);
+  border:1px solid rgba(255,255,255,.45); border-radius:999px; padding:4px 12px;
+  font-size:13px; font-weight:500;
+}
+
+/* ---------- tabs ---------- */
+.tabs{
+  display:flex; gap:6px; background:var(--card); border-radius:16px; padding:5px;
+  margin:-32px 16px 0; box-shadow:0 6px 18px rgba(46,107,160,.14); position:relative; z-index:2;
+}
+.tabs button{
+  flex:1; border:0; background:transparent; font-family:'Jua'; font-size:16px; color:var(--sub);
+  padding:10px 0; border-radius:12px; cursor:pointer; transition:.15s;
+}
+.tabs button.on{background:linear-gradient(150deg,var(--sky1),var(--sky2)); color:#fff}
+
+main{padding:18px 16px 0; max-width:560px; margin:0 auto}
+
+/* ---------- day nav ---------- */
+.daynav{display:flex; align-items:center; gap:8px; margin-bottom:4px}
+.daynav .arrow{
+  width:38px; height:38px; border-radius:12px; border:1px solid var(--line); background:var(--card);
+  font-size:16px; color:var(--ink); cursor:pointer; flex:none;
+}
+.daynav .mid{flex:1; text-align:center}
+.daynav .mid .d{font-family:'Jua'; font-size:19px}
+.daynav .mid .w{font-size:12px; color:var(--sub); margin-top:1px}
+.daynav .todaybtn{
+  flex:none; border:0; background:var(--sun); color:#7A5A00; font-family:'Jua'; font-size:13px;
+  border-radius:12px; padding:0 12px; height:38px; cursor:pointer;
+}
+.daynav .todaybtn:disabled{opacity:.35}
+
+/* ---------- today timeline ---------- */
+.tl{margin-top:14px; position:relative; padding-left:24px}
+.tl::before{content:''; position:absolute; left:8px; top:8px; bottom:8px; width:3px; border-radius:3px; background:var(--line)}
+.ev{position:relative; margin-bottom:10px}
+.ev::before{
+  content:''; position:absolute; left:-22px; top:18px; width:11px; height:11px; border-radius:50%;
+  background:#C6D8E8; border:2.5px solid var(--bg);
+}
+.ev .card{
+  background:var(--card); border-radius:16px; padding:12px 14px;
+  box-shadow:0 2px 8px rgba(46,107,160,.07); display:flex; align-items:center; gap:12px;
+  border:1.5px solid transparent;
+}
+.ev .chip{
+  flex:none; width:52px; text-align:center; border-radius:10px; padding:7px 2px;
+  font-family:'Jua'; font-size:13px; line-height:1.15;
+}
+.ev .info{flex:1; min-width:0}
+.ev .name{font-weight:700; font-size:15.5px}
+.ev .time{font-size:13px; color:var(--sub); margin-top:2px}
+.ev .st{flex:none; font-size:12px; font-weight:700; color:var(--sub)}
+.ev.done .card{opacity:.5}
+.ev.done::before{background:#DDE7EF}
+.ev.now::before{background:var(--now); box-shadow:0 0 0 4px rgba(255,107,87,.18); animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 4px rgba(255,107,87,.18)}50%{box-shadow:0 0 0 7px rgba(255,107,87,.08)}}
+.ev.now .card{border-color:var(--now); box-shadow:0 6px 18px rgba(255,107,87,.18)}
+.ev.now .st{color:var(--now)}
+.ev.next .card{border-color:var(--sky1)}
+.ev.next .st{color:var(--sky2)}
+.bar{height:5px; border-radius:5px; background:#F0E4E1; margin-top:8px; overflow:hidden; position:relative}
+.bar i{position:absolute; left:0; top:0; bottom:0; background:var(--now); border-radius:5px}
+.bar .sunmk{position:absolute; top:-7px; font-size:12px; transform:translateX(-6px)}
+
+.msgcard{
+  background:var(--card); border-radius:20px; padding:34px 20px; text-align:center;
+  box-shadow:0 2px 10px rgba(46,107,160,.08); margin-top:14px;
+}
+.msgcard .big{font-size:44px}
+.msgcard .t{font-family:'Jua'; font-size:19px; margin-top:10px}
+.msgcard .s{font-size:13.5px; color:var(--sub); margin-top:6px; line-height:1.5}
+
+/* ---------- week view ---------- */
+.wchips{display:flex; gap:6px; overflow-x:auto; padding-bottom:4px; -webkit-overflow-scrolling:touch}
+.wchips button{
+  flex:none; border:1px solid var(--line); background:var(--card); color:var(--sub);
+  font-family:'Jua'; font-size:13.5px; border-radius:999px; padding:7px 13px; cursor:pointer;
+}
+.wchips button.on{background:var(--ink); border-color:var(--ink); color:#fff}
+.wsub{font-size:12px; color:var(--sub); margin:8px 2px 10px}
+.grid{
+  background:var(--card); border-radius:18px; box-shadow:0 2px 10px rgba(46,107,160,.08);
+  padding:10px 8px 14px 0; overflow:hidden;
+}
+.ghead{display:grid; grid-template-columns:34px repeat(5,1fr); gap:3px; margin-bottom:6px}
+.ghead .dh{
+  text-align:center; font-family:'Jua'; font-size:13px; color:var(--sub); padding:6px 0 4px; border-radius:10px;
+  line-height:1.2;
+}
+.ghead .dh small{display:block; font-family:'Noto Sans KR'; font-size:10px; font-weight:500}
+.ghead .dh.today{background:var(--sun); color:#7A5A00}
+.gbody{display:grid; grid-template-columns:34px repeat(5,1fr); gap:3px; position:relative}
+.gtime{position:relative}
+.gtime span{
+  position:absolute; right:5px; transform:translateY(-6px);
+  font-size:9.5px; color:#A9B9C8; font-variant-numeric:tabular-nums;
+}
+.gcol{position:relative; background:#F7FAFD; border-radius:10px}
+.gcol .hline{position:absolute; left:0; right:0; height:1px; background:#EAF1F7}
+.blk{
+  position:absolute; left:1px; right:1px; border-radius:7px; padding:3px 3px 2px;
+  overflow:hidden; line-height:1.15; text-align:center;
+}
+.blk .bn{font-family:'Jua'; font-size:10.5px; letter-spacing:-.3px}
+.blk .bt{font-size:8.5px; opacity:.8; letter-spacing:-.3px; font-variant-numeric:tabular-nums}
+.blk.lane0{right:50%}
+.blk.lane1{left:50%}
+.holcol{
+  position:absolute; inset:0; border-radius:10px; background:repeating-linear-gradient(
+    -45deg,#E9F6EC,#E9F6EC 8px,#DFF1E3 8px,#DFF1E3 16px);
+  display:flex; align-items:center; justify-content:center;
+}
+.holcol span{
+  writing-mode:vertical-rl; font-family:'Jua'; font-size:13px; color:#3F8A52; letter-spacing:2px;
+}
+.nowline{position:absolute; left:34px; right:0; height:2px; background:var(--now); z-index:5; border-radius:2px}
+.nowline::before{content:'☀️'; position:absolute; left:-16px; top:-8px; font-size:11px}
+.note{font-size:11.5px; color:var(--sub); margin:10px 4px 0; line-height:1.6}
+footer{text-align:center; font-size:11px; color:#A9B9C8; margin-top:26px}
+.hidden{display:none}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="sun"></div>
+  <h1>유정이 여름방학 시간표 ☀️</h1>
+  <div class="range">7/27(월) ~ 8/21(금) · 4학년 여름방학</div>
+  <div class="todaypill" id="headToday"></div>
+</header>
+
+<div class="tabs">
+  <button id="tabToday" class="on">오늘</button>
+  <button id="tabWeek">주간</button>
+</div>
+
+<main>
+  <!-- 오늘 -->
+  <section id="viewToday">
+    <div class="daynav">
+      <button class="arrow" id="prevDay">◀</button>
+      <div class="mid">
+        <div class="d jua" id="dayTitle"></div>
+        <div class="w" id="dayWeekLabel"></div>
+      </div>
+      <button class="arrow" id="nextDay">▶</button>
+      <button class="todaybtn" id="goToday">오늘</button>
+    </div>
+    <div id="dayBody"></div>
+  </section>
+
+  <!-- 주간 -->
+  <section id="viewWeek" class="hidden">
+    <div class="wchips" id="weekChips"></div>
+    <div class="wsub" id="weekSub"></div>
+    <div class="grid">
+      <div class="ghead" id="gridHead"></div>
+      <div class="gbody" id="gridBody"></div>
+    </div>
+    <div class="note" id="weekNote"></div>
+  </section>
+
+  <footer>우리집 앱 · 유정이 여름방학 시간표</footer>
+</main>
+
+<script>
+// ---------- 시간 도우미 ----------
+const T = s => { const [h,m]=s.split(':').map(Number); return h*60+m; };
+const fmt = min => {
+  let h=Math.floor(min/60), m=min%60;
+  if(h>12) h-=12;
+  return h+':'+String(m).padStart(2,'0');
+};
+
+// ---------- 분류 색 ----------
+const C = {
+  school:{bg:'#FFFFFF', fg:'#2F6DB5', bd:'#BFDCF5'},
+  spec:  {bg:'#FFF3C4', fg:'#8A6D1A'},
+  lunch: {bg:'#EFF1F3', fg:'#8A929A'},
+  math:  {bg:'#D6ECFB', fg:'#2F6DB5'},
+  tkd:   {bg:'#CC5FC4', fg:'#FFFFFF'},
+  readin:{bg:'#4A7FD6', fg:'#FFFFFF'},
+  piano: {bg:'#FDE7D2', fg:'#C2701E'},
+  eng:   {bg:'#BFE3B8', fg:'#2F7A38'},
+  care:  {bg:'#F08A3C', fg:'#FFFFFF'},
+  swim:  {bg:'#DDF1FA', fg:'#1F7FB5'},
+};
+const ev = (n,c,s,e) => ({n, c, s:T(s), e:T(e)});
+
+// ---------- 시간표 데이터 ----------
+// 기본 주 (7/27~8/14) — withSpec: 8/3부터 줄넘기(월수금)/체조(화목) 특강
+function baseWeek(withSpec){
+  const lunch = ev('점심시간','lunch','12:00','13:00');
+  const mwf = name => [
+    ev(name,'school','9:50','10:30'),
+    ...(withSpec ? [ev('줄넘기 특강','spec','11:00','11:50')] : []),
+    lunch,
+  ];
+  const tt = name => [
+    ev(name,'school', name==='공예캘리B'?'10:00':'9:50', name==='공예캘리B'?'10:50':'10:30'),
+    ...(withSpec ? [ev('체조 특강','spec','11:00','11:50')] : []),
+    lunch,
+    ev('수학','math','14:00','15:00'),
+    ev('리드인','readin','15:00','16:00'),
+    ev('피아노','piano','16:00','17:00'),
+    ev('돌봄','care','17:30','19:30'),
+  ];
+  return [
+    [...mwf('창의과학B'), ev('수학','math','13:00','14:00'), ev('태권도','tkd','14:30','15:20'), ev('영어학원','eng','15:40','17:50'), ev('돌봄','care','17:50','19:50')],
+    [...tt('공예캘리B'), ev('수영학원','swim','19:20','21:10')],
+    [...mwf('로봇과학B'), ev('수학','math','13:00','14:00'), ev('태권도','tkd','14:30','15:20'), ev('영어학원','eng','15:40','17:50'), ev('돌봄','care','17:50','19:50')],
+    [...tt('배드민턴B')],
+    [...mwf('한자B'), ev('태권도','tkd','14:30','15:20'), ev('영어학원','eng','15:40','17:50'), ev('돌봄','care','17:50','19:50')],
+  ];
+}
+
+// 마지막 주 (8/17~8/21)
+const lastWeek = [
+  null, // 8/17 월 대체공휴일
+  [ ev('공예캘리B','school','10:00','10:50'), ev('체조 특강','spec','11:00','11:50'),
+    ev('단소 특강','spec','12:00','12:50'), ev('리드인','readin','14:00','15:00'),
+    ev('피아노','piano','16:00','17:00'), ev('수학','math','17:00','18:00'),
+    ev('돌봄','care','18:00','19:00'), ev('수영학원','swim','19:20','21:10') ],
+  [ ev('로봇과학B','school','9:50','10:30'), ev('줄넘기 특강','spec','11:00','11:50'),
+    ev('단소 특강','spec','12:00','12:50'), ev('태권도','tkd','14:30','15:20'),
+    ev('영어학원','eng','15:40','17:50'), ev('돌봄','care','17:50','19:50'),
+    ev('수학','math','19:00','20:00') ],
+  [ ev('배드민턴B','school','9:50','10:30'), ev('체조 특강','spec','11:00','11:50'),
+    ev('단소 특강','spec','12:00','12:50'), ev('리드인','readin','14:00','15:00'),
+    ev('피아노','piano','16:00','17:00'), ev('수학','math','17:00','18:00'),
+    ev('돌봄','care','18:00','19:00') ],
+  [ ev('한자B','school','9:50','10:30'), ev('줄넘기 특강','spec','11:00','11:50'),
+    ev('단소 특강','spec','12:00','12:50'), ev('태권도','tkd','14:30','15:20'),
+    ev('영어학원','eng','15:40','17:50'), ev('돌봄','care','17:50','19:50'),
+    ev('수학','math','19:00','20:00') ],
+];
+
+const WEEKS = [
+  {label:'1주차', sub:'7/27 ~ 7/31', start:new Date(2026,6,27), days:baseWeek(false),
+   note:'특강(줄넘기·체조)은 8/3부터 시작해요.'},
+  {label:'2주차', sub:'8/3 ~ 8/7', start:new Date(2026,7,3), days:baseWeek(true),
+   note:'줄넘기 특강: 월·수·금 / 체조 특강: 화·목 (11:00~11:50)'},
+  {label:'3주차', sub:'8/10 ~ 8/14', start:new Date(2026,7,10), days:baseWeek(true),
+   note:'줄넘기 특강: 월·수·금 / 체조 특강: 화·목 (11:00~11:50)'},
+  {label:'마지막 주', sub:'8/17 ~ 8/21', start:new Date(2026,7,17), days:lastWeek,
+   holiday:{0:'대체공휴일'},
+   note:'⚠️ 마지막 주는 시간이 달라요! 리드인 2시, 수학은 화·목 5시 / 수·금 저녁 7시. 단소 특강은 8/24(월)에도 12:00~12:50 있어요.'},
+];
+// 8/24 단소 특강만 있는 날
+const EXTRA = { '2026-08-24': [ev('단소 특강','spec','12:00','12:50')] };
+
+const DOW = ['일','월','화','수','목','금','토'];
+const key = d => d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const sameDay = (a,b) => a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate();
+const addDays = (d,n) => { const x=new Date(d); x.setDate(x.getDate()+n); return x; };
+
+// 날짜 → {week, dayIdx} / 'weekend' / 'extra' / 'before' / 'after' / null(사이 주말 등)
+function locate(d){
+  if(EXTRA[key(d)]) return {type:'extra', events:EXTRA[key(d)]};
+  for(const w of WEEKS){
+    const diff = Math.round((new Date(d.getFullYear(),d.getMonth(),d.getDate()) - w.start)/86400000);
+    if(diff>=0 && diff<=4){
+      if(w.holiday && w.holiday[diff]!==undefined) return {type:'holiday', week:w, dayIdx:diff, name:w.holiday[diff]};
+      return {type:'day', week:w, dayIdx:diff, events:w.days[diff]};
+    }
+  }
+  if(d < WEEKS[0].start) return {type:'before'};
+  if(d > addDays(WEEKS[WEEKS.length-1].start, 7+1)) return {type:'after'};
+  return {type:'weekend'};
+}
+
+// ---------- 상태 ----------
+// 테스트/링크용: ?d=2026-08-05 로 날짜 지정, ?tab=week 로 주간 탭 시작
+const params = new URLSearchParams(location.search);
+const forced = params.get('d') ? new Date(params.get('d').includes('T') ? params.get('d') : params.get('d')+'T00:00:00') : null;
+const NOW = () => forced ? new Date(forced) : new Date();
+let curDate = NOW();
+let curWeekIdx = (()=>{
+  const now = NOW();
+  for(let i=0;i<WEEKS.length;i++){
+    const end = addDays(WEEKS[i].start, 6);
+    if(now <= end) return i;
+  }
+  return WEEKS.length-1;
+})();
+
+// ---------- 오늘 뷰 ----------
+function renderDay(){
+  const d = curDate;
+  const loc = locate(d);
+  document.getElementById('dayTitle').textContent =
+    (d.getMonth()+1)+'/'+d.getDate()+' ('+DOW[d.getDay()]+')';
+  document.getElementById('dayWeekLabel').textContent =
+    loc.week ? loc.week.label+' · '+loc.week.sub : (loc.type==='extra' ? '단소 특강일' : '');
+  document.getElementById('goToday').disabled = sameDay(d, NOW());
+
+  const body = document.getElementById('dayBody');
+  const isToday = sameDay(d, NOW());
+  const nowMin = NOW().getHours()*60 + NOW().getMinutes();
+
+  const msg = (emoji, title, sub) =>
+    `<div class="msgcard"><div class="big">${emoji}</div><div class="t">${title}</div><div class="s">${sub}</div></div>`;
+
+  if(loc.type==='before'){
+    body.innerHTML = msg('🏖️','아직 방학 시간표 전이에요',
+      '방학 스케줄은 <b>7/27(월)</b>부터 시작!<br>▶ 버튼으로 미리 볼 수 있어요.');
+    return;
+  }
+  if(loc.type==='after'){
+    body.innerHTML = msg('🎒','방학 시간표 끝!','2학기도 파이팅! 새 시간표는 우리집 앱에서 확인해요.');
+    return;
+  }
+  if(loc.type==='weekend'){
+    body.innerHTML = msg('😴','주말이에요','오늘은 일정이 없어요. 푹 쉬어요!');
+    return;
+  }
+  if(loc.type==='holiday'){
+    body.innerHTML = msg('🎉',loc.name,'오늘은 쉬는 날! 학원도 학교도 없어요.');
+    return;
+  }
+
+  const events = [...loc.events].sort((a,b)=>a.s-b.s);
+  // 다음 일정 찾기 (오늘일 때만)
+  let nextIdx = -1;
+  if(isToday){
+    for(let i=0;i<events.length;i++){
+      if(events[i].s > nowMin){ nextIdx=i; break; }
+    }
+  }
+  let html = '<div class="tl">';
+  events.forEach((e,i)=>{
+    const col = C[e.c];
+    let cls='', st='';
+    if(isToday){
+      if(nowMin >= e.e){ cls='done'; st='끝!'; }
+      else if(nowMin >= e.s){ cls='now'; st='지금 ✨'; }
+      else if(i===nextIdx){ cls='next'; st='다음 ('+(e.s-nowMin)+'분 뒤)'; }
+    }
+    let bar='';
+    if(cls==='now'){
+      const p = Math.min(100, Math.round((nowMin-e.s)/(e.e-e.s)*100));
+      bar = `<div class="bar"><i style="width:${p}%"></i><span class="sunmk" style="left:${p}%">☀️</span></div>`;
+    }
+    const bd = col.bd ? `border:1.5px solid ${col.bd};` : '';
+    html += `<div class="ev ${cls}">
+      <div class="card">
+        <div class="chip" style="background:${col.bg};color:${col.fg};${bd}">${e.n.slice(0,4)}</div>
+        <div class="info">
+          <div class="name">${e.n}</div>
+          <div class="time">${fmt(e.s)} ~ ${fmt(e.e)}</div>
+          ${bar}
+        </div>
+        ${st?`<div class="st">${st}</div>`:''}
+      </div>
+    </div>`;
+  });
+  html += '</div>';
+  if(loc.type==='extra'){
+    html += `<div class="note">이날은 단소 특강만 있어요!</div>`;
+  }
+  body.innerHTML = html;
+}
+
+// ---------- 주간 뷰 ----------
+const GSTART = T('9:00'), GEND = T('21:30');
+const PXM = 0.92; // px per minute
+
+function lanes(events){
+  // 겹치는 일정은 좌/우 반반
+  const sorted=[...events].sort((a,b)=>a.s-b.s);
+  const out=[];
+  sorted.forEach(e=>{
+    const clash = out.filter(o=>o.e.s < e.e && e.s < o.e.e);
+    out.push({e, lane: clash.length ? (clash[clash.length-1].lane===0?1:0) : -1});
+    if(clash.length) clash.forEach(o=>{ if(o.lane===-1) o.lane=0; });
+  });
+  return out;
+}
+
+function renderWeek(){
+  const w = WEEKS[curWeekIdx];
+  const chips = document.getElementById('weekChips');
+  chips.innerHTML = WEEKS.map((x,i)=>
+    `<button class="${i===curWeekIdx?'on':''}" onclick="setWeek(${i})">${x.label}</button>`).join('');
+  document.getElementById('weekSub').textContent = w.sub + ' · ' + (curWeekIdx===3?'시간이 달라요!':'기본 스케줄');
+
+  const today = NOW();
+  const head = document.getElementById('gridHead');
+  let hh = '<div></div>';
+  for(let i=0;i<5;i++){
+    const d = addDays(w.start,i);
+    const isT = sameDay(d,today);
+    hh += `<div class="dh ${isT?'today':''}">${DOW[d.getDay()]}<small>${d.getMonth()+1}/${d.getDate()}</small></div>`;
+  }
+  head.innerHTML = hh;
+
+  const H = (GEND-GSTART)*PXM;
+  const body = document.getElementById('gridBody');
+  // 시간축
+  let tcol = `<div class="gtime" style="height:${H}px">`;
+  for(let m=GSTART; m<=GEND-30; m+=60){
+    tcol += `<span style="top:${(m-GSTART)*PXM}px">${fmt(m)}</span>`;
+  }
+  tcol += '</div>';
+
+  let cols='';
+  for(let i=0;i<5;i++){
+    const d = addDays(w.start,i);
+    const isT = sameDay(d,today);
+    let col = `<div class="gcol" style="height:${H}px">`;
+    for(let m=GSTART+60; m<GEND; m+=60){
+      col += `<div class="hline" style="top:${(m-GSTART)*PXM}px"></div>`;
+    }
+    if(w.holiday && w.holiday[i]!==undefined){
+      col += `<div class="holcol"><span>🎉 ${w.holiday[i]} 🎉</span></div>`;
+    } else {
+      lanes(w.days[i]||[]).forEach(({e,lane})=>{
+        const col_ = C[e.c];
+        const top=(e.s-GSTART)*PXM, h=Math.max(20,(e.e-e.s)*PXM-2);
+        const bd = col_.bd ? `border:1px solid ${col_.bd};` : '';
+        const laneCls = lane===-1 ? '' : (lane===0?'lane0':'lane1');
+        const short = (e.e-e.s)<=50;
+        col += `<div class="blk ${laneCls}" style="top:${top}px;height:${h}px;background:${col_.bg};color:${col_.fg};${bd}">
+          <div class="bn">${e.n.replace(' 특강','')}</div>
+          ${short&&laneCls?'':`<div class="bt">${fmt(e.s)}~${fmt(e.e)}</div>`}
+        </div>`;
+      });
+    }
+    // 오늘 현재 시각 라인
+    if(isT){
+      const nowMin = today.getHours()*60+today.getMinutes();
+      if(nowMin>=GSTART && nowMin<=GEND){
+        col += `<div class="nowline" style="top:${(nowMin-GSTART)*PXM}px;left:0;right:0"></div>`;
+      }
+    }
+    col += '</div>';
+    cols += col;
+  }
+  body.innerHTML = tcol + cols;
+  document.getElementById('weekNote').textContent = w.note || '';
+}
+window.setWeek = i => { curWeekIdx=i; renderWeek(); };
+
+// ---------- 탭/네비 ----------
+const $=id=>document.getElementById(id);
+$('tabToday').onclick=()=>{ $('tabToday').classList.add('on'); $('tabWeek').classList.remove('on');
+  $('viewToday').classList.remove('hidden'); $('viewWeek').classList.add('hidden'); };
+$('tabWeek').onclick=()=>{ $('tabWeek').classList.add('on'); $('tabToday').classList.remove('on');
+  $('viewWeek').classList.remove('hidden'); $('viewToday').classList.add('hidden'); renderWeek(); };
+$('prevDay').onclick=()=>{ curDate=addDays(curDate,-1); renderDay(); };
+$('nextDay').onclick=()=>{ curDate=addDays(curDate,1); renderDay(); };
+$('goToday').onclick=()=>{ curDate=NOW(); renderDay(); };
+
+// 헤더 오늘 표시
+(function(){
+  const n=NOW();
+  const loc=locate(n);
+  let extra='';
+  if(loc.type==='day') extra=' · '+loc.week.label;
+  else if(loc.type==='holiday') extra=' · 대체공휴일 🎉';
+  else if(loc.type==='before') extra=' · 방학 D-'+Math.ceil((WEEKS[0].start-n)/86400000);
+  $('headToday').textContent='오늘 '+(n.getMonth()+1)+'/'+n.getDate()+' ('+DOW[n.getDay()]+')'+extra;
+})();
+
+renderDay();
+renderWeek();
+if(params.get('tab')==='week') $('tabWeek').onclick();
+// 1분마다 지금/다음 갱신
+setInterval(()=>{ renderDay(); if(!$('viewWeek').classList.contains('hidden')) renderWeek(); }, 60000);
+</script>
+</body>
+</html>
