@@ -34,6 +34,15 @@ header .sun{
   background:radial-gradient(circle at 40% 40%, #FFE49A, var(--sun) 60%, rgba(255,214,107,.0) 72%);
   opacity:.9;
 }
+header .tigger{
+  position:absolute; right:8px; top:44px; width:94px; height:auto;
+  animation:bob 3.2s ease-in-out infinite;
+}
+@keyframes bob{
+  0%,100%{transform:translateY(0) rotate(-2deg)}
+  50%{transform:translateY(5px) rotate(2deg)}
+}
+@media (prefers-reduced-motion: reduce){ header .tigger{animation:none} }
 header h1{font-family:'Jua'; font-size:24px; font-weight:400; letter-spacing:.5px}
 header .range{font-size:12.5px; opacity:.92; margin-top:4px}
 header .todaypill{
@@ -141,6 +150,7 @@ main{padding:18px 16px 0; max-width:560px; margin:0 auto}
 .blk{
   position:absolute; left:1px; right:1px; border-radius:7px; padding:3px 3px 2px;
   overflow:hidden; line-height:1.15; text-align:center;
+  box-shadow:0 0 0 1.5px rgba(255,255,255,.9);
 }
 .blk .bn{font-family:'Jua'; font-size:10.5px; letter-spacing:-.3px}
 .blk .bt{font-size:8.5px; opacity:.8; letter-spacing:-.3px; font-variant-numeric:tabular-nums}
@@ -165,6 +175,46 @@ footer{text-align:center; font-size:11px; color:#A9B9C8; margin-top:26px}
 
 <header>
   <div class="sun"></div>
+  <svg class="tigger" viewBox="0 0 140 130" aria-hidden="true">
+    <!-- 물거품 -->
+    <ellipse cx="70" cy="115" rx="52" ry="8" fill="#FFFFFF" opacity=".28"/>
+    <circle cx="22" cy="114" r="3" fill="#FFFFFF" opacity=".5"/>
+    <circle cx="119" cy="111" r="4" fill="#FFFFFF" opacity=".5"/>
+    <!-- 꼬리 (튜브 뒤) -->
+    <path d="M112 96 q16 -2 14 -14 q-2 -10 -13 -8" stroke="#F0922B" stroke-width="5.5" fill="none" stroke-linecap="round"/>
+    <path d="M121 92 l6 -3 M124 82 l5 -4" stroke="#8A4B1F" stroke-width="3" stroke-linecap="round"/>
+    <!-- 몸통 -->
+    <ellipse cx="70" cy="86" rx="16" ry="14" fill="#F49B33"/>
+    <!-- 튜브 -->
+    <ellipse cx="70" cy="102" rx="48" ry="17" fill="#FF8A7A"/>
+    <ellipse cx="70" cy="100" rx="48" ry="15" fill="#FFA294"/>
+    <ellipse cx="70" cy="98.5" rx="22" ry="7" fill="#2F80C4"/>
+    <path d="M34 90 L29 103" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" opacity=".85"/>
+    <path d="M106 90 L111 103" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" opacity=".85"/>
+    <path d="M62 115 L78 115" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" opacity=".85"/>
+    <!-- 귀 -->
+    <circle cx="50" cy="32" r="9" fill="#F49B33"/><circle cx="50" cy="32" r="4.5" fill="#FFDFAF"/>
+    <circle cx="90" cy="32" r="9" fill="#F49B33"/><circle cx="90" cy="32" r="4.5" fill="#FFDFAF"/>
+    <!-- 얼굴 -->
+    <circle cx="70" cy="52" r="25" fill="#F49B33"/>
+    <ellipse cx="70" cy="61" rx="15" ry="11" fill="#FFE9C7"/>
+    <!-- 줄무늬 -->
+    <path d="M62 29 l3 7 M70 27 l0 7 M78 29 l-3 7" stroke="#8A4B1F" stroke-width="3.5" stroke-linecap="round"/>
+    <path d="M45 44 l8 3 M44 52 l8 1" stroke="#8A4B1F" stroke-width="3.5" stroke-linecap="round"/>
+    <path d="M95 44 l-8 3 M96 52 l-8 1" stroke="#8A4B1F" stroke-width="3.5" stroke-linecap="round"/>
+    <!-- 눈코입 -->
+    <ellipse cx="61" cy="49" rx="4.5" ry="5.5" fill="#FFFFFF"/>
+    <ellipse cx="79" cy="49" rx="4.5" ry="5.5" fill="#FFFFFF"/>
+    <circle cx="62" cy="50" r="2.3" fill="#2E1A0E"/><circle cx="78" cy="50" r="2.3" fill="#2E1A0E"/>
+    <circle cx="63" cy="48.6" r=".9" fill="#FFFFFF"/><circle cx="79" cy="48.6" r=".9" fill="#FFFFFF"/>
+    <ellipse cx="70" cy="58" rx="4" ry="2.8" fill="#B0413E"/>
+    <path d="M64 63 q6 5 12 0" stroke="#8A4B1F" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <circle cx="55" cy="60" r="3" fill="#FFB27D" opacity=".7"/><circle cx="85" cy="60" r="3" fill="#FFB27D" opacity=".7"/>
+    <!-- 팔 -->
+    <path d="M52 72 q-12 14 -6 26" stroke="#F49B33" stroke-width="9" fill="none" stroke-linecap="round"/>
+    <path d="M88 72 q12 14 6 26" stroke="#F49B33" stroke-width="9" fill="none" stroke-linecap="round"/>
+    <path d="M46 84 l7 2 M94 84 l-7 2" stroke="#8A4B1F" stroke-width="3" stroke-linecap="round"/>
+  </svg>
   <h1>유정이 여름방학 시간표 ☀️</h1>
   <div class="range">7/27(월) ~ 8/21(금) · 4학년 여름방학</div>
   <div class="todaypill" id="headToday"></div>
@@ -244,7 +294,7 @@ function baseWeek(withSpec){
     ev('수학','math','14:00','15:00'),
     ev('리드인','readin','15:00','16:00'),
     ev('피아노','piano','16:00','17:00'),
-    ev('돌봄','care','17:30','19:30'),
+    ev('돌봄','care','17:00','19:30'),
   ];
   return [
     [...mwf('창의과학B'), ev('수학','math','13:00','14:00'), ev('태권도','tkd','14:30','15:20'), ev('영어학원','eng','15:40','17:50'), ev('돌봄','care','17:50','19:50')],
@@ -407,11 +457,11 @@ const GSTART = T('9:00'), GEND = T('21:30');
 const PXM = 0.92; // px per minute
 
 function lanes(events){
-  // 겹치는 일정은 좌/우 반반
+  // 15분 이상 겹치는 일정만 좌/우 반반 (10분짜리 살짝 겹침은 전체 폭 유지)
   const sorted=[...events].sort((a,b)=>a.s-b.s);
   const out=[];
   sorted.forEach(e=>{
-    const clash = out.filter(o=>o.e.s < e.e && e.s < o.e.e);
+    const clash = out.filter(o=>Math.min(o.e.e,e.e)-Math.max(o.e.s,e.s) >= 15);
     out.push({e, lane: clash.length ? (clash[clash.length-1].lane===0?1:0) : -1});
     if(clash.length) clash.forEach(o=>{ if(o.lane===-1) o.lane=0; });
   });
