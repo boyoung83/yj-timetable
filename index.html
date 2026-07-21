@@ -348,6 +348,7 @@ for(let i=1;i<=4;i++) week1[i].push(ev('그림책 특강','spec','15:00','17:00'
 // 2주차 피아노 방학(8/3~5): 피아노는 화·목이라 8/4(화)만 휴강
 const week2 = baseWeek([0,2,4], true);
 week2[1] = week2[1].filter(e=>e.n!=='피아노');
+week2[4].push(ev('수학 보강','math','13:00','14:00')); // 8/7(금) 1시 수학 보강
 
 const WEEKS = [
   {label:'1주차', sub:'7/27 ~ 7/31', start:new Date(2026,6,27), days:week1,
