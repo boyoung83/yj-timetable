@@ -8,7 +8,10 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☀️</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<!-- 폰트는 렌더링을 막지 않게 비동기 로드.
+     (동기 로드 시 폰트 서버가 응답 없으면 뒤따르는 인라인 script가 실행되지 않아 시간표가 통째로 안 보임) -->
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet"></noscript>
 <style>
 :root{
   --bg:#F2F8FC; --card:#FFFFFF; --ink:#274257; --sub:#7A8CA0;
@@ -18,10 +21,11 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{
-  font-family:'Noto Sans KR',sans-serif; background:var(--bg); color:var(--ink);
+  font-family:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  background:var(--bg); color:var(--ink);
   min-height:100vh; padding-bottom:32px;
 }
-.jua{font-family:'Jua',sans-serif}
+.jua{font-family:'Jua','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif}
 
 /* ---------- header ---------- */
 header{
