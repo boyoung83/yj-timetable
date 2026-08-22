@@ -278,6 +278,7 @@ const fmt = min => {
 const C = {
   school:{bg:'#FFFFFF', fg:'#2F6DB5', bd:'#BFDCF5'},
   spec:  {bg:'#FFF3C4', fg:'#8A6D1A'},
+  after: {bg:'#FFE0A6', fg:'#8A5A16'},
   math:  {bg:'#1F5F8B', fg:'#FFFFFF'},
   tkd:   {bg:'#D45FC4', fg:'#FFFFFF'},
   readin:{bg:'#FCE0DA', fg:'#B4573F'},
@@ -384,6 +385,20 @@ const scheduleFor = d => {
   return hit;
 };
 
+// ---------- 기간 한정 반복 일정 (방과후학교 등) ----------
+// from~to 사이의 해당 요일에만 자동으로 붙어요. 기수가 끝나면 to 이후로는 안 나옵니다.
+const TERMS = [
+  { name:'방과후 4기', from:new Date(2026,8,1), to:new Date(2026,9,31),
+    summary:'월 창의과학B · 화 공예캘리A · 수 로봇과학A · 금 한자B 1:40~2:20 / 목 배드민턴B 2:30~3:10',
+    days:[
+      [ ev('창의과학B','after','13:40','14:20','방과후') ], // 월
+      [ ev('공예캘리A','after','13:40','14:20','방과후') ], // 화
+      [ ev('로봇과학A','after','13:40','14:20','방과후') ], // 수
+      [ ev('배드민턴B','after','14:30','15:10','방과후') ], // 목
+      [ ev('한자B','after','13:40','14:20','방과후') ],     // 금
+    ] },
+];
+
 const SEM_START = new Date(2026,7,24); // 8/24(월) 개학
 
 // ---------- 그날만 다른 날 (공휴일·휴강·특강) ----------
@@ -422,6 +437,9 @@ function locate(d){
   if(o && o.holiday) return {type:'holiday', name:o.holiday, note:o.note};
   const sc = scheduleFor(d);
   let events = sc.week[dow-1];
+  for(const t of TERMS){
+    if(ymd(d)>=ymd(t.from) && ymd(d)<=ymd(t.to)) events = [...events, ...(t.days[dow-1]||[])];
+  }
   if(o){
     if(o.events) events = o.events;
     else {
@@ -605,6 +623,15 @@ function renderWeek(){
     cols += col;
   }
   body.innerHTML = tcol + cols;
+
+  // 이 주에 걸치는 기간 한정 일정(방과후 등)
+  TERMS.forEach(t=>{
+    const on = [0,1,2,3,4].some(i=>{
+      const d = addDays(weekStart,i);
+      return ymd(d)>=ymd(t.from) && ymd(d)<=ymd(t.to);
+    });
+    if(on) notes.push(`🎒 ${t.name} (${t.from.getMonth()+1}/${t.from.getDate()}~${t.to.getMonth()+1}/${t.to.getDate()}): ${t.summary}`);
+  });
 
   // 이 주에 실제로 쓰인 시간표의 안내문만 (주 중간에 바뀌면 둘 다 라벨과 함께)
   const used = [];
