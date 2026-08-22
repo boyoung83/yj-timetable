@@ -290,9 +290,11 @@ const C = {
 const ev = (n,c,s,e,d) => ({n, c, s:T(s), e:T(e), d});
 
 // ---------- 2학기 정규 시간표 (월~금 매주 반복) ----------
-// 학교: 월·화·수·금 5교시(~1:30) / 목 6교시(~2:20)
-// 돌봄: 월·수·금 6:00~7:00 / 화·목 5:30~7:00
-const WEEK = [
+// 시간표가 바뀌는 시기가 있어서 '언제부터' 적용되는지와 함께 관리해요.
+// 새 시간표가 생기면 아래 SCHEDULES 에 {from, label, week, notes} 한 벌을 추가하면 됩니다.
+
+// 8/24 개학 ~ 8/31
+const WEEK_AUG = [
   // 월요일
   [ ev('학교','school','9:00','13:30','5교시'),
     ev('태권도','tkd','14:30','15:20'),
@@ -324,6 +326,61 @@ const WEEK = [
     ev('돌봄','care','18:00','19:00') ],
 ];
 
+// 9/1 ~ : 월요일 수학 2:30~3:30 / 태권도 월·수·금 낮 → 월·수·목 저녁 7시
+const WEEK_SEP = [
+  // 월요일
+  [ ev('학교','school','9:00','13:30','5교시'),
+    ev('수학','math','14:30','15:30'),
+    ev('영어학원','eng','15:40','17:50'),
+    ev('돌봄','care','18:00','19:00'),
+    ev('태권도','tkd','19:00','19:50') ],
+  // 화요일
+  [ ev('학교','school','9:00','13:30','5교시'),
+    ev('리드인','readin','14:30','15:30'),
+    ev('수학','math','15:30','16:30'),
+    ev('피아노','piano','16:30','17:30'),
+    ev('돌봄','care','17:30','19:00'),
+    ev('수영학원','swim','19:30','21:10') ],
+  // 수요일
+  [ ev('학교','school','9:00','13:30','5교시'),
+    ev('영어학원','eng','15:40','17:50'),
+    ev('돌봄','care','18:00','19:00'),
+    ev('태권도','tkd','19:00','19:50') ],
+  // 목요일
+  [ ev('학교','school','9:00','14:20','6교시'),
+    ev('리드인','readin','14:30','15:30'),
+    ev('수학','math','15:30','16:30'),
+    ev('피아노','piano','16:30','17:30'),
+    ev('돌봄','care','17:30','19:00'),
+    ev('태권도','tkd','19:00','19:50') ],
+  // 금요일
+  [ ev('학교','school','9:00','13:30','5교시'),
+    ev('영어학원','eng','15:40','17:50'),
+    ev('돌봄','care','18:00','19:00') ],
+];
+
+const SCHOOL_NOTE = '🏫 학교: 월·화·수·금 5교시(~1:30) / 목 6교시(~2:20)';
+const CARE_NOTE   = '🧡 돌봄: 월·수·금 6:00~7:00 / 화·목 5:30~7:00 · 🏊 수영: 화 7:30~9:10';
+
+// from(그날 포함)부터 다음 시간표가 시작될 때까지 적용
+const SCHEDULES = [
+  { from:new Date(2026,7,24), label:'8월', week:WEEK_AUG, notes:[
+      SCHOOL_NOTE,
+      '🥋 태권도: 월·수·금 2:30~3:20',
+      '📘 수학: 화·목 3:30~4:30 / 월 저녁 7:00~8:00',
+      CARE_NOTE ] },
+  { from:new Date(2026,8,1),  label:'9월~', week:WEEK_SEP, notes:[
+      SCHOOL_NOTE,
+      '🥋 태권도: 월·수·목 저녁 7:00~7:50',
+      '📘 수학: 월 2:30~3:30 / 화·목 3:30~4:30',
+      CARE_NOTE ] },
+];
+const scheduleFor = d => {
+  let hit = null;
+  for(const sc of SCHEDULES) if(ymd(d) >= ymd(sc.from)) hit = sc;
+  return hit;
+};
+
 const SEM_START = new Date(2026,7,24); // 8/24(월) 개학
 
 // ---------- 그날만 다른 날 (공휴일·휴강·특강) ----------
@@ -334,6 +391,7 @@ const SEM_START = new Date(2026,7,24); // 8/24(월) 개학
 //   {events:[ ... ]}                            → 그날 시간표를 통째로 교체
 //   {note:'단축수업'}                           → 주간 뷰 아래에 메모 표시
 const OVERRIDE = {
+  '2026-08-26': {add:[ev('태권도','tkd','19:00','19:50','보강')], note:'태권도 보강 7:00~7:50'},
   '2026-09-24': {holiday:'추석 연휴'},
   '2026-09-25': {holiday:'추석'},
   '2026-10-05': {holiday:'개천절 대체공휴일'},
@@ -359,7 +417,8 @@ function locate(d){
   if(dow===0 || dow===6) return {type:'weekend'};
   if(ymd(d) < ymd(SEM_START)) return {type:'before'};
   if(o && o.holiday) return {type:'holiday', name:o.holiday, note:o.note};
-  let events = WEEK[dow-1];
+  const sc = scheduleFor(d);
+  let events = sc.week[dow-1];
   if(o){
     if(o.events) events = o.events;
     else {
@@ -367,7 +426,7 @@ function locate(d){
       if(o.add)  events = [...events, ...o.add];
     }
   }
-  return {type:'day', events, note:o && o.note};
+  return {type:'day', events, sched:sc, note:o && o.note};
 }
 
 // ---------- 상태 ----------
@@ -527,7 +586,7 @@ function renderWeek(){
                         : (nm.length<=4?10.5:nm.length<=5?9.4:8.6);
         col += `<div class="blk ${laneCls}${clip}" style="top:${top}px;height:${h}px;background:${col_.bg};color:${col_.fg};${bd}">
           <div class="bn" style="font-size:${fs}px">${nm}</div>
-          ${e.d&&h>=54?`<div class="bt">${e.d}</div>`:''}
+          ${e.d&&h>=40?`<div class="bt">${e.d}</div>`:''}
           ${short&&laneCls?'':`<div class="bt">${fmt(e.s)}~${fmt(e.e)}</div>`}
         </div>`;
       });
@@ -544,9 +603,23 @@ function renderWeek(){
   }
   body.innerHTML = tcol + cols;
 
-  notes.push('🏫 학교: 월·화·수·금 5교시(~1:30) / 목 6교시(~2:20)');
-  notes.push('🧡 돌봄: 월·수·금 6:00~7:00 / 화·목 5:30~7:00');
-  notes.push('📘 수학: 화·목 3:30~4:30, 월 저녁 7:00~8:00 · 🏊 수영: 화 7:30~9:10');
+  // 이 주에 실제로 쓰인 시간표의 안내문만 (주 중간에 바뀌면 둘 다 라벨과 함께)
+  const used = [];
+  for(let i=0;i<5;i++){
+    const sc = scheduleFor(addDays(weekStart,i));
+    if(sc && ymd(addDays(weekStart,i))>=ymd(SEM_START) && !used.includes(sc)) used.push(sc);
+  }
+  const sameLen = used.every(sc => sc.notes.length === used[0].notes.length);
+  if(used.length===1 || !sameLen){
+    used.forEach(sc => sc.notes.forEach(n =>
+      notes.push(used.length>1 ? `<b>[${sc.label}]</b> ${n}` : n)));
+  } else {
+    // 같은 줄은 한 번만, 시기에 따라 달라지는 줄만 라벨을 붙여서
+    used[0].notes.forEach((n,i)=>{
+      if(used.every(sc => sc.notes[i]===n)) notes.push(n);
+      else used.forEach(sc => notes.push(`<b>[${sc.label}]</b> ${sc.notes[i]}`));
+    });
+  }
   document.getElementById('weekNote').innerHTML = notes.join('<br>');
 }
 
