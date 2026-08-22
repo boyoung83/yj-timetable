@@ -220,7 +220,7 @@ footer{text-align:center; font-size:11px; color:#A9B9C8; margin-top:26px}
     <path d="M45 86 l7 2 M95 86 l-7 2" stroke="#8A4B1F" stroke-width="3" stroke-linecap="round"/>
   </svg>
   <h1>유정이 2학기 시간표 🎒</h1>
-  <div class="range">4학년 2학기 · 8/24(월) 개학 · 매주 반복</div>
+  <div class="range">4학년 2학기 · 8/25(화) 개학 · 매주 반복</div>
   <div class="todaypill" id="headToday"></div>
 </header>
 
@@ -295,7 +295,7 @@ const ev = (n,c,s,e,d) => ({n, c, s:T(s), e:T(e), d});
 // 시간표가 바뀌는 시기가 있어서 '언제부터' 적용되는지와 함께 관리해요.
 // 새 시간표가 생기면 아래 SCHEDULES 에 {from, label, week, notes} 한 벌을 추가하면 됩니다.
 
-// 8/24 개학 ~ 8/28 (개학 첫 주)
+// 8/25 개학 ~ 8/28 (개학 첫 주)
 const WEEK_AUG = [
   // 월요일
   [ ev('학교','school','9:00','13:30','5교시'),
@@ -367,7 +367,7 @@ const CARE_NOTE   = '🧡 돌봄: 월·수·금 6:00~7:00 / 화·목 5:30~7:00 �
 
 // from(그날 포함)부터 다음 시간표가 시작될 때까지 적용
 const SCHEDULES = [
-  { from:new Date(2026,7,24), label:'개학 첫 주', week:WEEK_AUG, notes:[
+  { from:new Date(2026,7,25), label:'개학 첫 주', week:WEEK_AUG, notes:[
       SCHOOL_NOTE,
       '🥋 태권도: 월·수·금 2:30~3:20',
       '📖 리드인: 화·목 2:30~3:30',
@@ -400,9 +400,9 @@ const TERMS = [
     ] },
 ];
 
-const SEM_START = new Date(2026,7,24); // 8/24(월) 개학
+const SEM_START = new Date(2026,7,25); // 8/25(화) 개학 (8/24까지 학교 방학)
 
-// ---------- 지난 시간표 보관 (여름방학 7/27~8/21) ----------
+// ---------- 지난 시간표 보관 (여름방학 7/27~8/24) ----------
 // 개학 전 날짜로 넘기면 그때 시간표를 그대로 볼 수 있어요.
 // jump: 줄넘기 특강 있는 요일 인덱스(0=월,2=수,4=금) / gym: 체조 특강(화목) 여부
 function vacBase(jump, gym){
@@ -483,9 +483,12 @@ const VAC_WEEKS = [
    holiday:{0:'대체공휴일'},
    note:'⚠️ 마지막 주는 시간이 달라요! 리드인 2시, 수학은 화·목 5시 / 수·금 저녁 7시.'},
 ];
-// 방학 시간표 밖의 특강만 있던 날
+// 방학 시간표 밖의, 특강만 있던 날
 const VAC_EXTRA = {
-  '2026-07-24': [ev('줄넘기 특강','spec','11:00','11:50')],
+  '2026-07-24': {note:'이날은 특강만 있었어요',
+    events:[ ev('줄넘기 특강','spec','11:00','11:50') ]},
+  '2026-08-24': {note:'학교 방학 마지막 날 — 단소 특강만 있어요',
+    events:[ ev('단소 특강','spec','12:00','12:50') ]},
 };
 
 // ---------- 그날만 다른 날 (공휴일·휴강·특강) ----------
@@ -524,8 +527,8 @@ function locate(d){
 
   // 개학 전 → 보관해 둔 여름방학 시간표
   if(ymd(d) < ymd(SEM_START)){
-    if(VAC_EXTRA[key(d)])
-      return {type:'day', past:true, events:VAC_EXTRA[key(d)], note:'이날은 특강만 있었어요'};
+    const x = VAC_EXTRA[key(d)];
+    if(x) return {type:'day', past:true, events:x.events, note:x.note};
     for(const w of VAC_WEEKS){
       const diff = Math.round((new Date(d.getFullYear(),d.getMonth(),d.getDate()) - w.start)/86400000);
       if(diff>=0 && diff<=4){
@@ -565,9 +568,10 @@ function renderDay(){
   const loc = locate(d);
   document.getElementById('dayTitle').textContent =
     (d.getMonth()+1)+'/'+d.getDate()+' ('+DOW[d.getDay()]+')';
+  const gone = ymd(d) < ymd(NOW()) ? ' (지난 기록)' : '';
   document.getElementById('dayWeekLabel').textContent =
-    loc.vacWeek ? `여름방학 ${loc.vacWeek.label} · ${loc.vacWeek.sub} (지난 기록)`
-    : loc.past ? '여름방학 (지난 기록)'
+    loc.vacWeek ? `여름방학 ${loc.vacWeek.label} · ${loc.vacWeek.sub}${gone}`
+    : loc.past ? '여름방학'+gone
     : loc.type==='day' ? '2학기 정규 시간표' : '';
   document.getElementById('goToday').disabled = sameDay(d, NOW());
 
@@ -580,7 +584,7 @@ function renderDay(){
 
   if(loc.type==='before'){
     body.innerHTML = msg('📅','이 날짜는 시간표가 없어요',
-      '여름방학 시간표는 <b>7/27~8/21</b>,<br>2학기 시간표는 <b>8/24(월)</b>부터 있어요.');
+      '여름방학 시간표는 <b>7/27~8/24</b>,<br>2학기 시간표는 <b>8/25(화)</b>부터 있어요.');
     return;
   }
   if(loc.type==='weekend'){
@@ -617,7 +621,7 @@ function renderDay(){
     const bd = col.bd ? `border:1.5px solid ${col.bd};` : '';
     html += `<div class="ev ${cls}">
       <div class="card">
-        <div class="chip" style="background:${col.bg};color:${col.fg};${bd}">${e.n.slice(0,4)}</div>
+        <div class="chip" style="background:${col.bg};color:${col.fg};${bd}">${e.n.replace(' 특강','').slice(0,4)}</div>
         <div class="info">
           <div class="name">${e.n}${e.d?`<span class="tag">${e.d}</span>`:''}</div>
           <div class="time">${fmt(e.s)} ~ ${fmt(e.e)}</div>
@@ -648,8 +652,10 @@ function lanes(events){
   const out=[];
   sorted.forEach(e=>{
     const clash = out.filter(o=>Math.min(o.e.e,e.e)-Math.max(o.e.s,e.s) >= 15);
-    out.push({e, lane: clash.length ? (clash[clash.length-1].lane===0?1:0) : -1});
-    if(clash.length) clash.forEach(o=>{ if(o.lane===-1) o.lane=0; });
+    if(!clash.length){ out.push({e, lane:-1}); return; }
+    clash.forEach(o=>{ if(o.lane===-1) o.lane=0; });   // 먼저 자리를 확정하고
+    const taken = new Set(clash.map(o=>o.lane));       // 비어 있는 쪽으로
+    out.push({e, lane: taken.has(0) ? 1 : 0});
   });
   return out;
 }
@@ -666,7 +672,9 @@ function renderWeek(){
     (weekStart.getMonth()+1)+'/'+weekStart.getDate()+'(월) ~ '+(fri.getMonth()+1)+'/'+fri.getDate()+'(금)';
   document.getElementById('weekSub').textContent =
     (sameDay(weekStart, mondayOf(today)) ? '이번 주 · ' : '') +
-    (hasNow ? '2학기 정규 시간표' : hasPast ? '여름방학 시간표 (지난 기록)' : '시간표가 없는 주');
+    (hasNow ? '2학기 정규 시간표'
+      : hasPast ? '여름방학 시간표' + (ymd(fri) < ymd(today) ? ' (지난 기록)' : '')
+      : '시간표가 없는 주');
   document.getElementById('goThisWeek').disabled = sameDay(weekStart, mondayOf(today));
 
   const head = document.getElementById('gridHead');
