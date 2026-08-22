@@ -293,7 +293,7 @@ const ev = (n,c,s,e,d) => ({n, c, s:T(s), e:T(e), d});
 // 시간표가 바뀌는 시기가 있어서 '언제부터' 적용되는지와 함께 관리해요.
 // 새 시간표가 생기면 아래 SCHEDULES 에 {from, label, week, notes} 한 벌을 추가하면 됩니다.
 
-// 8/24 개학 ~ 8/31
+// 8/24 개학 ~ 8/28 (개학 첫 주)
 const WEEK_AUG = [
   // 월요일
   [ ev('학교','school','9:00','13:30','5교시'),
@@ -326,7 +326,7 @@ const WEEK_AUG = [
     ev('돌봄','care','18:00','19:00') ],
 ];
 
-// 9/1 ~ : 월요일 수학 2:30~3:30 / 태권도 월·수·금 낮 → 월·수·목 저녁 7시
+// 8/31 ~ : 월요일 수학 2:30~3:30 / 태권도 월·수·금 낮 → 월·수·목 저녁 7시
 const WEEK_SEP = [
   // 월요일
   [ ev('학교','school','9:00','13:30','5교시'),
@@ -364,12 +364,12 @@ const CARE_NOTE   = '🧡 돌봄: 월·수·금 6:00~7:00 / 화·목 5:30~7:00 �
 
 // from(그날 포함)부터 다음 시간표가 시작될 때까지 적용
 const SCHEDULES = [
-  { from:new Date(2026,7,24), label:'8월', week:WEEK_AUG, notes:[
+  { from:new Date(2026,7,24), label:'개학 첫 주', week:WEEK_AUG, notes:[
       SCHOOL_NOTE,
       '🥋 태권도: 월·수·금 2:30~3:20',
       '📘 수학: 화·목 3:30~4:30 / 월 저녁 7:00~8:00',
       CARE_NOTE ] },
-  { from:new Date(2026,8,1),  label:'9월~', week:WEEK_SEP, notes:[
+  { from:new Date(2026,7,31), label:'8/31~', week:WEEK_SEP, notes:[
       SCHOOL_NOTE,
       '🥋 태권도: 월·수·목 저녁 7:00~7:50',
       '📘 수학: 월 2:30~3:30 / 화·목 3:30~4:30',
