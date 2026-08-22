@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#5EAEE0">
-<title>유정이 여름방학 시간표</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☀️</text></svg>">
+<title>유정이 2학기 시간표</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎒</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- 폰트는 렌더링을 막지 않게 비동기 로드.
@@ -68,13 +68,13 @@ header .todaypill{
 
 main{padding:18px 16px 0; max-width:560px; margin:0 auto}
 
-/* ---------- day nav ---------- */
+/* ---------- day / week nav ---------- */
 .daynav{display:flex; align-items:center; gap:8px; margin-bottom:4px}
 .daynav .arrow{
   width:38px; height:38px; border-radius:12px; border:1px solid var(--line); background:var(--card);
   font-size:16px; color:var(--ink); cursor:pointer; flex:none;
 }
-.daynav .mid{flex:1; text-align:center}
+.daynav .mid{flex:1; text-align:center; min-width:0}
 .daynav .mid .d{font-family:'Jua'; font-size:19px}
 .daynav .mid .w{font-size:12px; color:var(--sub); margin-top:1px}
 .daynav .todaybtn{
@@ -102,6 +102,10 @@ main{padding:18px 16px 0; max-width:560px; margin:0 auto}
 }
 .ev .info{flex:1; min-width:0}
 .ev .name{font-weight:700; font-size:15.5px}
+.ev .name .tag{
+  font-family:'Jua'; font-weight:400; font-size:11px; color:var(--sub); background:var(--line);
+  border-radius:6px; padding:1px 6px; margin-left:6px; vertical-align:2px;
+}
 .ev .time{font-size:13px; color:var(--sub); margin-top:2px}
 .ev .st{flex:none; font-size:12px; font-weight:700; color:var(--sub)}
 .ev.done .card{opacity:.5}
@@ -125,16 +129,9 @@ main{padding:18px 16px 0; max-width:560px; margin:0 auto}
 .msgcard .s{font-size:13.5px; color:var(--sub); margin-top:6px; line-height:1.5}
 
 /* ---------- week view ---------- */
-.wchips{display:flex; gap:6px; overflow-x:auto; padding-bottom:4px; -webkit-overflow-scrolling:touch}
-.wchips button{
-  flex:none; border:1px solid var(--line); background:var(--card); color:var(--sub);
-  font-family:'Jua'; font-size:13.5px; border-radius:999px; padding:7px 13px; cursor:pointer;
-}
-.wchips button.on{background:var(--ink); border-color:var(--ink); color:#fff}
-.wsub{font-size:12px; color:var(--sub); margin:8px 2px 10px}
 .grid{
   background:var(--card); border-radius:18px; box-shadow:0 2px 10px rgba(46,107,160,.08);
-  padding:10px 8px 14px 0; overflow:hidden;
+  padding:10px 8px 14px 0; overflow:hidden; margin-top:12px;
 }
 .ghead{display:grid; grid-template-columns:34px repeat(5,1fr); gap:3px; margin-bottom:6px}
 .ghead .dh{
@@ -159,6 +156,7 @@ main{padding:18px 16px 0; max-width:560px; margin:0 auto}
 .blk .bn{font-family:'Jua'; font-size:10.5px; letter-spacing:-.3px;
   white-space:nowrap; overflow:hidden; text-overflow:clip}
 .blk .bt{font-size:8.5px; opacity:.8; letter-spacing:-.3px; font-variant-numeric:tabular-nums}
+.blk.clip{border-radius:0 0 7px 7px; border-top:2px dashed rgba(47,109,181,.35)}
 .blk.lane0{right:50%}
 .blk.lane1{left:50%}
 .holcol{
@@ -169,9 +167,11 @@ main{padding:18px 16px 0; max-width:560px; margin:0 auto}
 .holcol span{
   writing-mode:vertical-rl; font-family:'Jua'; font-size:13px; color:#3F8A52; letter-spacing:2px;
 }
+.holcol.pre{background:repeating-linear-gradient(-45deg,#FFF4DE,#FFF4DE 8px,#FFEAC4 8px,#FFEAC4 16px)}
+.holcol.pre span{color:#B0802E}
 .nowline{position:absolute; left:34px; right:0; height:2px; background:var(--now); z-index:5; border-radius:2px}
 .nowline::before{content:'☀️'; position:absolute; left:-16px; top:-8px; font-size:11px}
-.note{font-size:11.5px; color:var(--sub); margin:10px 4px 0; line-height:1.6}
+.note{font-size:11.5px; color:var(--sub); margin:10px 4px 0; line-height:1.7}
 footer{text-align:center; font-size:11px; color:#A9B9C8; margin-top:26px}
 .hidden{display:none}
 </style>
@@ -181,22 +181,21 @@ footer{text-align:center; font-size:11px; color:#A9B9C8; margin-top:26px}
 <header>
   <div class="sun"></div>
   <svg class="tigger" viewBox="0 0 140 130" aria-hidden="true">
-    <!-- 물거품 -->
-    <ellipse cx="70" cy="115" rx="52" ry="8" fill="#FFFFFF" opacity=".28"/>
-    <circle cx="22" cy="114" r="3" fill="#FFFFFF" opacity=".5"/>
-    <circle cx="119" cy="111" r="4" fill="#FFFFFF" opacity=".5"/>
-    <!-- 꼬리 (튜브 뒤) -->
-    <path d="M112 96 q16 -2 14 -14 q-2 -10 -13 -8" stroke="#F0922B" stroke-width="5.5" fill="none" stroke-linecap="round"/>
-    <path d="M121 92 l6 -3 M124 82 l5 -4" stroke="#8A4B1F" stroke-width="3" stroke-linecap="round"/>
+    <!-- 바닥 그림자 -->
+    <ellipse cx="70" cy="121" rx="42" ry="7" fill="#FFFFFF" opacity=".26"/>
+    <!-- 꼬리 (가방 뒤) -->
+    <path d="M104 100 q18 -2 16 -15 q-2 -11 -14 -9" stroke="#F0922B" stroke-width="5.5" fill="none" stroke-linecap="round"/>
+    <path d="M115 94 l6 -3 M118 84 l5 -4" stroke="#8A4B1F" stroke-width="3" stroke-linecap="round"/>
+    <!-- 책가방 (몸통 뒤) -->
+    <rect x="44" y="74" width="52" height="45" rx="14" fill="#E2574C"/>
+    <rect x="44" y="98" width="52" height="8" fill="#C9463C"/>
+    <rect x="61" y="103" width="18" height="12" rx="4" fill="#FFCF7E"/>
+    <rect x="66" y="107" width="8" height="4" rx="2" fill="#D89A3A"/>
     <!-- 몸통 -->
-    <ellipse cx="70" cy="86" rx="16" ry="14" fill="#F49B33"/>
-    <!-- 튜브 -->
-    <ellipse cx="70" cy="102" rx="48" ry="17" fill="#FF8A7A"/>
-    <ellipse cx="70" cy="100" rx="48" ry="15" fill="#FFA294"/>
-    <ellipse cx="70" cy="98.5" rx="22" ry="7" fill="#2F80C4"/>
-    <path d="M34 90 L29 103" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" opacity=".85"/>
-    <path d="M106 90 L111 103" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" opacity=".85"/>
-    <path d="M62 115 L78 115" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" opacity=".85"/>
+    <ellipse cx="70" cy="88" rx="17" ry="14" fill="#F49B33"/>
+    <!-- 어깨끈 -->
+    <path d="M57 76 q-3 12 1 21" stroke="#F0776B" stroke-width="5.5" fill="none" stroke-linecap="round"/>
+    <path d="M83 76 q3 12 -1 21" stroke="#F0776B" stroke-width="5.5" fill="none" stroke-linecap="round"/>
     <!-- 귀 -->
     <circle cx="50" cy="32" r="9" fill="#F49B33"/><circle cx="50" cy="32" r="4.5" fill="#FFDFAF"/>
     <circle cx="90" cy="32" r="9" fill="#F49B33"/><circle cx="90" cy="32" r="4.5" fill="#FFDFAF"/>
@@ -216,12 +215,12 @@ footer{text-align:center; font-size:11px; color:#A9B9C8; margin-top:26px}
     <path d="M64 63 q6 5 12 0" stroke="#8A4B1F" stroke-width="2" fill="none" stroke-linecap="round"/>
     <circle cx="55" cy="60" r="3" fill="#FFB27D" opacity=".7"/><circle cx="85" cy="60" r="3" fill="#FFB27D" opacity=".7"/>
     <!-- 팔 -->
-    <path d="M52 72 q-12 14 -6 26" stroke="#F49B33" stroke-width="9" fill="none" stroke-linecap="round"/>
-    <path d="M88 72 q12 14 6 26" stroke="#F49B33" stroke-width="9" fill="none" stroke-linecap="round"/>
-    <path d="M46 84 l7 2 M94 84 l-7 2" stroke="#8A4B1F" stroke-width="3" stroke-linecap="round"/>
+    <path d="M53 74 q-13 13 -8 25" stroke="#F49B33" stroke-width="9" fill="none" stroke-linecap="round"/>
+    <path d="M87 74 q13 13 8 25" stroke="#F49B33" stroke-width="9" fill="none" stroke-linecap="round"/>
+    <path d="M45 86 l7 2 M95 86 l-7 2" stroke="#8A4B1F" stroke-width="3" stroke-linecap="round"/>
   </svg>
-  <h1>유정이 여름방학 시간표 ☀️</h1>
-  <div class="range">7/27(월) ~ 8/21(금) · 4학년 여름방학</div>
+  <h1>유정이 2학기 시간표 🎒</h1>
+  <div class="range">4학년 2학기 · 8/24(월) 개학 · 매주 반복</div>
   <div class="todaypill" id="headToday"></div>
 </header>
 
@@ -247,8 +246,15 @@ footer{text-align:center; font-size:11px; color:#A9B9C8; margin-top:26px}
 
   <!-- 주간 -->
   <section id="viewWeek" class="hidden">
-    <div class="wchips" id="weekChips"></div>
-    <div class="wsub" id="weekSub"></div>
+    <div class="daynav">
+      <button class="arrow" id="prevWeek">◀</button>
+      <div class="mid">
+        <div class="d jua" id="weekTitle"></div>
+        <div class="w" id="weekSub"></div>
+      </div>
+      <button class="arrow" id="nextWeek">▶</button>
+      <button class="todaybtn" id="goThisWeek">이번주</button>
+    </div>
     <div class="grid">
       <div class="ghead" id="gridHead"></div>
       <div class="gbody" id="gridBody"></div>
@@ -256,7 +262,7 @@ footer{text-align:center; font-size:11px; color:#A9B9C8; margin-top:26px}
     <div class="note" id="weekNote"></div>
   </section>
 
-  <footer>우리집 앱 · 유정이 여름방학 시간표</footer>
+  <footer>우리집 앱 · 유정이 2학기 시간표</footer>
 </main>
 
 <script>
@@ -272,140 +278,105 @@ const fmt = min => {
 const C = {
   school:{bg:'#FFFFFF', fg:'#2F6DB5', bd:'#BFDCF5'},
   spec:  {bg:'#FFF3C4', fg:'#8A6D1A'},
-  lunch: {bg:'#EFF1F3', fg:'#8A929A'},
-  math:  {bg:'#D6ECFB', fg:'#2F6DB5'},
-  tkd:   {bg:'#CC5FC4', fg:'#FFFFFF'},
-  readin:{bg:'#4A7FD6', fg:'#FFFFFF'},
-  piano: {bg:'#FDE7D2', fg:'#C2701E'},
-  eng:   {bg:'#BFE3B8', fg:'#2F7A38'},
+  math:  {bg:'#1F5F8B', fg:'#FFFFFF'},
+  tkd:   {bg:'#D45FC4', fg:'#FFFFFF'},
+  readin:{bg:'#FCE0DA', fg:'#B4573F'},
+  piano: {bg:'#8CCB74', fg:'#2C5E20'},
+  eng:   {bg:'#C8EDC0', fg:'#2F7A38'},
   care:  {bg:'#F08A3C', fg:'#FFFFFF'},
-  swim:  {bg:'#DDF1FA', fg:'#1F7FB5'},
+  swim:  {bg:'#CFE7F8', fg:'#1F7FB5'},
 };
-const ev = (n,c,s,e) => ({n, c, s:T(s), e:T(e)});
+// n:이름, c:분류, s~e:시간, d:작은 설명(선택)
+const ev = (n,c,s,e,d) => ({n, c, s:T(s), e:T(e), d});
 
-// ---------- 시간표 데이터 ----------
-// 기본 주 (7/27~8/14)
-// jump: 줄넘기 특강 있는 요일 인덱스(0=월,2=수,4=금) — 7/24·27, 8/3·5·7·10·12·14
-// gym: 체조 특강(화목) 여부 — 8/3부터
-function baseWeek(jump, gym){
-  const lunch = ev('점심시간','lunch','12:00','13:00');
-  const mwf = (name, dayIdx) => [
-    ev(name,'school','9:50','10:30'),
-    ...(jump.includes(dayIdx) ? [ev('줄넘기 특강','spec','11:00','11:50')] : []),
-    lunch,
-  ];
-  const tt = name => [
-    ev(name,'school', name==='공예캘리B'?'9:00':'9:50', name==='공예캘리B'?'9:40':'10:30'),
-    ...(gym ? [ev('체조 특강','spec','11:00','11:50')] : []),
-    lunch,
-    ev('수학','math','14:00','15:00'),
-    ev('리드인','readin','15:00','16:00'),
-    ev('피아노','piano','16:00','17:00'),
-    ev('돌봄','care','17:30','19:30'),
-  ];
-  return [
-    [...mwf('창의과학B',0), ev('수학','math','13:00','14:00'), ev('태권도','tkd','14:30','15:20'), ev('영어학원','eng','15:40','17:50'), ev('돌봄','care','17:50','19:50')],
-    [...tt('공예캘리B'), ev('수영학원','swim','19:20','21:10')],
-    [...mwf('로봇과학B',2), ev('수학','math','13:00','14:00'), ev('태권도','tkd','14:30','15:20'), ev('영어학원','eng','15:40','17:50'), ev('돌봄','care','17:50','19:50')],
-    [...tt('배드민턴B')],
-    [...mwf('한자B',4), ev('태권도','tkd','14:30','15:20'), ev('영어학원','eng','15:40','17:50'), ev('돌봄','care','17:50','19:50')],
-  ];
-}
-
-// 마지막 주 (8/17~8/21)
-const lastWeek = [
-  null, // 8/17 월 대체공휴일
-  [ ev('공예캘리B','school','9:00','9:40'), ev('체조 특강','spec','11:00','11:50'),
-    ev('단소 특강','spec','12:00','12:50'), ev('리드인','readin','14:00','15:00'),
-    ev('피아노','piano','16:00','17:00'), ev('수학','math','17:00','18:00'),
-    ev('돌봄','care','18:00','19:30'), ev('수영학원','swim','19:20','21:10') ],
-  [ ev('로봇과학B','school','9:50','10:30'), ev('줄넘기 특강','spec','11:00','11:50'),
-    ev('단소 특강','spec','12:00','12:50'), ev('태권도','tkd','14:30','15:20'),
-    ev('영어학원','eng','15:40','17:50'), ev('돌봄','care','18:00','19:00'),
+// ---------- 2학기 정규 시간표 (월~금 매주 반복) ----------
+// 학교: 월·화·수·금 5교시(~1:30) / 목 6교시(~2:20)
+// 돌봄: 월·수·금 6:00~7:00 / 화·목 5:30~7:00
+const WEEK = [
+  // 월요일
+  [ ev('학교','school','9:00','13:30','5교시'),
+    ev('태권도','tkd','14:30','15:20'),
+    ev('영어학원','eng','15:40','17:50'),
+    ev('돌봄','care','18:00','19:00'),
     ev('수학','math','19:00','20:00') ],
-  [ ev('배드민턴B','school','9:50','10:30'), ev('체조 특강','spec','11:00','11:50'),
-    ev('단소 특강','spec','12:00','12:50'), ev('리드인','readin','14:00','15:00'),
-    ev('피아노','piano','16:00','17:00'), ev('수학','math','17:00','18:00'),
+  // 화요일
+  [ ev('학교','school','9:00','13:30','5교시'),
+    ev('리드인','readin','14:30','15:30'),
+    ev('수학','math','15:30','16:30'),
+    ev('피아노','piano','16:30','17:30'),
+    ev('돌봄','care','17:30','19:00'),
+    ev('수영학원','swim','19:30','21:10') ],
+  // 수요일
+  [ ev('학교','school','9:00','13:30','5교시'),
+    ev('태권도','tkd','14:30','15:20'),
+    ev('영어학원','eng','15:40','17:50'),
     ev('돌봄','care','18:00','19:00') ],
-  [ ev('한자B','school','9:50','10:30'), ev('줄넘기 특강','spec','11:00','11:50'),
-    ev('단소 특강','spec','12:00','12:50'), ev('태권도','tkd','14:30','15:20'),
-    ev('영어학원','eng','15:40','17:50'), ev('돌봄','care','18:00','19:00'),
-    ev('수학','math','19:00','20:00') ],
+  // 목요일
+  [ ev('학교','school','9:00','14:20','6교시'),
+    ev('리드인','readin','14:30','15:30'),
+    ev('수학','math','15:30','16:30'),
+    ev('피아노','piano','16:30','17:30'),
+    ev('돌봄','care','17:30','19:00') ],
+  // 금요일
+  [ ev('학교','school','9:00','13:30','5교시'),
+    ev('태권도','tkd','14:30','15:20'),
+    ev('영어학원','eng','15:40','17:50'),
+    ev('돌봄','care','18:00','19:00') ],
 ];
 
-// 1주차 휴강: 영어학원 7/27~31 / 태권도 7/28~31 / 수학·리드인 7/30~31 / 돌봄 7/28~31
-const week1 = baseWeek([0], false);
-week1[0] = week1[0].filter(e=>e.n!=='영어학원');                                  // 7/27 월
-week1[1] = week1[1].filter(e=>e.n!=='돌봄');                                      // 7/28 화
-week1[2] = week1[2].filter(e=>e.n!=='영어학원' && e.n!=='태권도' && e.n!=='돌봄'); // 7/29 수
-week1[3] = week1[3].filter(e=>e.n!=='수학' && e.n!=='리드인' && e.n!=='돌봄');     // 7/30 목
-week1[4] = week1[4].filter(e=>e.n!=='영어학원' && e.n!=='태권도' && e.n!=='돌봄'); // 7/31 금
+const SEM_START = new Date(2026,7,24); // 8/24(월) 개학
 
-// 도서관 특강 '그림책 캐릭터 만들기' 7/28~31(화~금) 15:00~17:00 + 일정 조정
-week1[0].push(ev('리드인','readin','15:30','16:30'));                 // 화 리드인 → 월 3:30
-week1[1] = week1[1].filter(e=>e.n!=='리드인' && e.n!=='피아노')
-  .map(e=> e.n==='수학' ? ev('수학','math','13:00','14:00') : e);      // 화 수학 2시 → 1시
-week1[2].push(ev('피아노','piano','14:00','15:00'));                   // 화 피아노 → 수 2시
-week1[3] = week1[3].filter(e=>e.n!=='피아노');
-week1[3].push(ev('피아노','piano','14:00','15:00'));                   // 목 피아노 4시 → 2시
-for(let i=1;i<=4;i++) week1[i].push(ev('그림책 특강','spec','15:00','17:00'));
-
-// 2주차 피아노 방학(8/3~5): 피아노는 화·목이라 8/4(화)만 휴강 + 8/4 돌봄 없음
-const week2 = baseWeek([0,2,4], true);
-week2[1] = week2[1].filter(e=>e.n!=='피아노' && e.n!=='돌봄');
-week2[4].push(ev('수학 보강','math','13:00','14:00')); // 8/7(금) 1시 수학 보강
-
-const WEEKS = [
-  {label:'1주차', sub:'7/27 ~ 7/31', start:new Date(2026,6,27), days:week1,
-   note:'📚 그림책 특강(구미도서관 미디어 마루) 화~금 3:00~5:00! 그래서 리드인은 7/27(월) 3:30, 화 수학은 1:00, 피아노는 7/29(수)·30(목) 2:00로 옮겼어요. ⚠️ 휴강: 영어학원 7/27~31 / 태권도·돌봄 7/28~31 / 수학·리드인 7/30~31'},
-  {label:'2주차', sub:'8/3 ~ 8/7', start:new Date(2026,7,3), days:week2,
-   note:'⚠️ 피아노 학원 방학(8/3~5)으로 8/4(화) 피아노는 쉬고, 8/4 돌봄도 없어요. 줄넘기 특강: 월·수·금 / 체조 특강: 화·목 (11:00~11:50)'},
-  {label:'3주차', sub:'8/10 ~ 8/14', start:new Date(2026,7,10), days:baseWeek([0,2,4], true),
-   note:'줄넘기 특강: 월·수·금 / 체조 특강: 화·목 (11:00~11:50)'},
-  {label:'마지막 주', sub:'8/17 ~ 8/21', start:new Date(2026,7,17), days:lastWeek,
-   holiday:{0:'대체공휴일'},
-   note:'⚠️ 마지막 주는 시간이 달라요! 리드인 2시, 수학은 화·목 5시 / 수·금 저녁 7시. 단소 특강은 8/24(월)에도 12:00~12:50 있어요.'},
-];
-// 방학 시간표 밖의 특강만 있는 날
-const EXTRA = {
-  '2026-07-24': [ev('줄넘기 특강','spec','11:00','11:50')],
-  '2026-08-24': [ev('단소 특강','spec','12:00','12:50')],
+// ---------- 그날만 다른 날 (공휴일·휴강·특강) ----------
+// 쓰는 법 — 'YYYY-MM-DD' 에 아래 중 하나를 넣으면 돼요.
+//   {holiday:'추석'}                            → 하루 통째로 쉬는 날
+//   {drop:['영어학원','태권도']}                 → 정규 일정에서 빼기 (휴강)
+//   {add:[ev('현장체험','spec','9:00','15:00')]} → 그날만 추가
+//   {events:[ ... ]}                            → 그날 시간표를 통째로 교체
+//   {note:'단축수업'}                           → 주간 뷰 아래에 메모 표시
+const OVERRIDE = {
+  '2026-09-24': {holiday:'추석 연휴'},
+  '2026-09-25': {holiday:'추석'},
+  '2026-10-05': {holiday:'개천절 대체공휴일'},
+  '2026-10-09': {holiday:'한글날'},
+  '2026-12-25': {holiday:'성탄절'},
+  '2027-01-01': {holiday:'신정'},
 };
 
 const DOW = ['일','월','화','수','목','금','토'];
 const key = d => d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 const sameDay = (a,b) => a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate();
 const addDays = (d,n) => { const x=new Date(d); x.setDate(x.getDate()+n); return x; };
+const ymd = d => d.getFullYear()*10000 + (d.getMonth()+1)*100 + d.getDate();
+const mondayOf = d => {
+  const x = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  return addDays(x, x.getDay()===0 ? -6 : 1-x.getDay());
+};
 
-// 날짜 → {week, dayIdx} / 'weekend' / 'extra' / 'before' / 'after' / null(사이 주말 등)
+// 날짜 → {type:'day'|'weekend'|'holiday'|'before', ...}
 function locate(d){
-  if(EXTRA[key(d)]) return {type:'extra', events:EXTRA[key(d)]};
-  for(const w of WEEKS){
-    const diff = Math.round((new Date(d.getFullYear(),d.getMonth(),d.getDate()) - w.start)/86400000);
-    if(diff>=0 && diff<=4){
-      if(w.holiday && w.holiday[diff]!==undefined) return {type:'holiday', week:w, dayIdx:diff, name:w.holiday[diff]};
-      return {type:'day', week:w, dayIdx:diff, events:w.days[diff]};
+  const o = OVERRIDE[key(d)];
+  const dow = d.getDay();
+  if(dow===0 || dow===6) return {type:'weekend'};
+  if(ymd(d) < ymd(SEM_START)) return {type:'before'};
+  if(o && o.holiday) return {type:'holiday', name:o.holiday, note:o.note};
+  let events = WEEK[dow-1];
+  if(o){
+    if(o.events) events = o.events;
+    else {
+      if(o.drop) events = events.filter(e => !o.drop.includes(e.n));
+      if(o.add)  events = [...events, ...o.add];
     }
   }
-  if(d < WEEKS[0].start) return {type:'before'};
-  if(d > addDays(WEEKS[WEEKS.length-1].start, 7+1)) return {type:'after'};
-  return {type:'weekend'};
+  return {type:'day', events, note:o && o.note};
 }
 
 // ---------- 상태 ----------
-// 테스트/링크용: ?d=2026-08-05 로 날짜 지정, ?tab=week 로 주간 탭 시작
+// 테스트/링크용: ?d=2026-09-25 로 날짜 지정, ?tab=week 로 주간 탭 시작
 const params = new URLSearchParams(location.search);
 const forced = params.get('d') ? new Date(params.get('d').includes('T') ? params.get('d') : params.get('d')+'T00:00:00') : null;
 const NOW = () => forced ? new Date(forced) : new Date();
 let curDate = NOW();
-let curWeekIdx = (()=>{
-  const now = NOW();
-  for(let i=0;i<WEEKS.length;i++){
-    const end = addDays(WEEKS[i].start, 6);
-    if(now <= end) return i;
-  }
-  return WEEKS.length-1;
-})();
+let weekStart = mondayOf(NOW());
 
 // ---------- 오늘 뷰 ----------
 function renderDay(){
@@ -414,7 +385,7 @@ function renderDay(){
   document.getElementById('dayTitle').textContent =
     (d.getMonth()+1)+'/'+d.getDate()+' ('+DOW[d.getDay()]+')';
   document.getElementById('dayWeekLabel').textContent =
-    loc.week ? loc.week.label+' · '+loc.week.sub : (loc.type==='extra' ? '특강만 있는 날' : '');
+    loc.type==='day' ? '2학기 정규 시간표' : '';
   document.getElementById('goToday').disabled = sameDay(d, NOW());
 
   const body = document.getElementById('dayBody');
@@ -425,12 +396,8 @@ function renderDay(){
     `<div class="msgcard"><div class="big">${emoji}</div><div class="t">${title}</div><div class="s">${sub}</div></div>`;
 
   if(loc.type==='before'){
-    body.innerHTML = msg('🏖️','아직 방학 시간표 전이에요',
-      '방학 스케줄은 <b>7/27(월)</b>부터 시작!<br>▶ 버튼으로 미리 볼 수 있어요.');
-    return;
-  }
-  if(loc.type==='after'){
-    body.innerHTML = msg('🎒','방학 시간표 끝!','2학기도 파이팅! 새 시간표는 우리집 앱에서 확인해요.');
+    body.innerHTML = msg('🏖️','아직 방학이에요',
+      '2학기 시간표는 <b>8/24(월)</b>부터!<br>▶ 버튼으로 미리 볼 수 있어요.');
     return;
   }
   if(loc.type==='weekend'){
@@ -438,7 +405,7 @@ function renderDay(){
     return;
   }
   if(loc.type==='holiday'){
-    body.innerHTML = msg('🎉',loc.name,'오늘은 쉬는 날! 학원도 학교도 없어요.');
+    body.innerHTML = msg('🎉',loc.name,'오늘은 쉬는 날! 학교도 학원도 없어요.');
     return;
   }
 
@@ -469,7 +436,7 @@ function renderDay(){
       <div class="card">
         <div class="chip" style="background:${col.bg};color:${col.fg};${bd}">${e.n.slice(0,4)}</div>
         <div class="info">
-          <div class="name">${e.n}</div>
+          <div class="name">${e.n}${e.d?`<span class="tag">${e.d}</span>`:''}</div>
           <div class="time">${fmt(e.s)} ~ ${fmt(e.e)}</div>
           ${bar}
         </div>
@@ -478,14 +445,12 @@ function renderDay(){
     </div>`;
   });
   html += '</div>';
-  if(loc.type==='extra'){
-    html += `<div class="note">이날은 특강만 있어요!</div>`;
-  }
+  if(loc.note) html += `<div class="note">📌 ${loc.note}</div>`;
   body.innerHTML = html;
 }
 
 // ---------- 주간 뷰 ----------
-const GSTART = T('9:00'), GEND = T('21:30');
+const GSTART = T('12:00'), GEND = T('21:30'); // 오전은 학교뿐이라 12시부터 표시(학교 블록은 위가 잘림)
 const PXM = 0.92; // px per minute
 
 function lanes(events){
@@ -501,17 +466,19 @@ function lanes(events){
 }
 
 function renderWeek(){
-  const w = WEEKS[curWeekIdx];
-  const chips = document.getElementById('weekChips');
-  chips.innerHTML = WEEKS.map((x,i)=>
-    `<button class="${i===curWeekIdx?'on':''}" onclick="setWeek(${i})">${x.label}</button>`).join('');
-  document.getElementById('weekSub').textContent = w.sub + ' · ' + (curWeekIdx===3?'시간이 달라요!':'기본 스케줄');
-
   const today = NOW();
+  const fri = addDays(weekStart,4);
+  document.getElementById('weekTitle').textContent =
+    (weekStart.getMonth()+1)+'/'+weekStart.getDate()+'(월) ~ '+(fri.getMonth()+1)+'/'+fri.getDate()+'(금)';
+  document.getElementById('weekSub').textContent =
+    (sameDay(weekStart, mondayOf(today)) ? '이번 주 · ' : '') +
+    (ymd(fri) < ymd(SEM_START) ? '아직 방학이에요' : '2학기 정규 시간표');
+  document.getElementById('goThisWeek').disabled = sameDay(weekStart, mondayOf(today));
+
   const head = document.getElementById('gridHead');
   let hh = '<div></div>';
   for(let i=0;i<5;i++){
-    const d = addDays(w.start,i);
+    const d = addDays(weekStart,i);
     const isT = sameDay(d,today);
     hh += `<div class="dh ${isT?'today':''}">${DOW[d.getDay()]}<small>${d.getMonth()+1}/${d.getDate()}</small></div>`;
   }
@@ -526,20 +493,30 @@ function renderWeek(){
   }
   tcol += '</div>';
 
+  const notes = [];
   let cols='';
   for(let i=0;i<5;i++){
-    const d = addDays(w.start,i);
+    const d = addDays(weekStart,i);
     const isT = sameDay(d,today);
+    const loc = locate(d);
+    const dLabel = (d.getMonth()+1)+'/'+d.getDate()+'('+DOW[d.getDay()]+')';
     let col = `<div class="gcol" style="height:${H}px">`;
     for(let m=GSTART+60; m<GEND; m+=60){
       col += `<div class="hline" style="top:${(m-GSTART)*PXM}px"></div>`;
     }
-    if(w.holiday && w.holiday[i]!==undefined){
-      col += `<div class="holcol"><span>🎉 ${w.holiday[i]} 🎉</span></div>`;
+    if(loc.type==='holiday'){
+      col += `<div class="holcol"><span>🎉 ${loc.name} 🎉</span></div>`;
+      notes.push(`🎉 ${dLabel} ${loc.name} — 쉬는 날이에요.`);
+    } else if(loc.type==='before'){
+      col += `<div class="holcol pre"><span>방학</span></div>`;
     } else {
-      lanes(w.days[i]||[]).forEach(({e,lane})=>{
+      if(loc.note) notes.push(`📌 ${dLabel} ${loc.note}`);
+      lanes(loc.events||[]).forEach(({e,lane})=>{
+        if(e.e<=GSTART) return;
         const col_ = C[e.c];
-        const top=(e.s-GSTART)*PXM, h=Math.max(20,(e.e-e.s)*PXM-2);
+        const rawTop=(e.s-GSTART)*PXM;
+        const top=Math.max(0,rawTop), h=Math.max(20,(e.e-GSTART)*PXM-top-2);
+        const clip = rawTop<0 ? ' clip' : '';
         const bd = col_.bd ? `border:1px solid ${col_.bd};` : '';
         const laneCls = lane===-1 ? '' : (lane===0?'lane0':'lane1');
         const short = (e.e-e.s)<=50;
@@ -548,8 +525,9 @@ function renderWeek(){
         const half = laneCls!=='';
         const fs = half ? (nm.length<=3?9.5:nm.length<=4?8.6:7.8)
                         : (nm.length<=4?10.5:nm.length<=5?9.4:8.6);
-        col += `<div class="blk ${laneCls}" style="top:${top}px;height:${h}px;background:${col_.bg};color:${col_.fg};${bd}">
+        col += `<div class="blk ${laneCls}${clip}" style="top:${top}px;height:${h}px;background:${col_.bg};color:${col_.fg};${bd}">
           <div class="bn" style="font-size:${fs}px">${nm}</div>
+          ${e.d&&h>=54?`<div class="bt">${e.d}</div>`:''}
           ${short&&laneCls?'':`<div class="bt">${fmt(e.s)}~${fmt(e.e)}</div>`}
         </div>`;
       });
@@ -565,9 +543,12 @@ function renderWeek(){
     cols += col;
   }
   body.innerHTML = tcol + cols;
-  document.getElementById('weekNote').textContent = w.note || '';
+
+  notes.push('🏫 학교: 월·화·수·금 5교시(~1:30) / 목 6교시(~2:20)');
+  notes.push('🧡 돌봄: 월·수·금 6:00~7:00 / 화·목 5:30~7:00');
+  notes.push('📘 수학: 화·목 3:30~4:30, 월 저녁 7:00~8:00 · 🏊 수영: 화 7:30~9:10');
+  document.getElementById('weekNote').innerHTML = notes.join('<br>');
 }
-window.setWeek = i => { curWeekIdx=i; renderWeek(); };
 
 // ---------- 탭/네비 ----------
 const $=id=>document.getElementById(id);
@@ -578,15 +559,18 @@ $('tabWeek').onclick=()=>{ $('tabWeek').classList.add('on'); $('tabToday').class
 $('prevDay').onclick=()=>{ curDate=addDays(curDate,-1); renderDay(); };
 $('nextDay').onclick=()=>{ curDate=addDays(curDate,1); renderDay(); };
 $('goToday').onclick=()=>{ curDate=NOW(); renderDay(); };
+$('prevWeek').onclick=()=>{ weekStart=addDays(weekStart,-7); renderWeek(); };
+$('nextWeek').onclick=()=>{ weekStart=addDays(weekStart,7); renderWeek(); };
+$('goThisWeek').onclick=()=>{ weekStart=mondayOf(NOW()); renderWeek(); };
 
 // 헤더 오늘 표시
 (function(){
   const n=NOW();
   const loc=locate(n);
   let extra='';
-  if(loc.type==='day') extra=' · '+loc.week.label;
-  else if(loc.type==='holiday') extra=' · 대체공휴일 🎉';
-  else if(loc.type==='before') extra=' · 방학 D-'+Math.ceil((WEEKS[0].start-n)/86400000);
+  if(loc.type==='day') extra=' · 2학기';
+  else if(loc.type==='holiday') extra=' · '+loc.name+' 🎉';
+  else if(loc.type==='before') extra=' · 개학 D-'+Math.ceil((SEM_START-new Date(n.getFullYear(),n.getMonth(),n.getDate()))/86400000);
   $('headToday').textContent='오늘 '+(n.getMonth()+1)+'/'+n.getDate()+' ('+DOW[n.getDay()]+')'+extra;
 })();
 
